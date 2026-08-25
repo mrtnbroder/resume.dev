@@ -1,0 +1,19 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
+import Layout from '@/layouts/main.astro';
+import ResumeBuilder from '@/components/builder/resume-builder';
+import { resolveLocale, ui, type Locale } from '@/i18n/ui';
+
+const locale = resolveLocale(Astro.currentLocale);
+const other: Locale = locale === 'de' ? 'en' : 'de';
+---
+
+<Layout>
+	<ResumeBuilder client:only="react" locale={locale} altHref={getRelativeLocaleUrl(other)} />
+	<noscript>
+		<p class="p-8 text-center text-sm">
+			{ui[locale]['noscript.message']}
+		</p>
+	</noscript>
+</Layout>
