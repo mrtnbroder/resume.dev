@@ -2,7 +2,7 @@
 
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
-
+import { livestoreDevtoolsPlugin } from '@livestore/devtools-vite';
 import react from '@astrojs/react';
 
 // GitHub Pages project sites serve the app under /<repo>; the deploy workflow
@@ -21,7 +21,8 @@ export default defineConfig({
     routing: { prefixDefaultLocale: false },
   },
   vite: {
-    plugins: [tailwindcss()],
+    worker: { format: 'es' },
+    plugins: [tailwindcss(), livestoreDevtoolsPlugin({ schemaPath: './src/livestore/schema.ts' })],
   },
   integrations: [react()],
 });

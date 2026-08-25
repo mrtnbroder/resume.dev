@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { StoreRegistry } from "@livestore/livestore";
+import { StoreRegistryProvider } from "@livestore/react";
 import { Download, Eye, FileText, PenLine } from "lucide-react";
 
 import { FormPanel } from "./form-panel";
 import { LanguageSwitcher } from "./language-switcher";
+import { ResumeManager } from "./resume-manager";
 import { ScaledSheet } from "./scaled-sheet";
 import { ResumePreview } from "@/components/preview/resume-preview";
 import { Button } from "@/components/ui/button";
-import { I18nProvider } from "@/i18n/react";
-import { createTranslator, type Locale } from "@/i18n/ui";
 import { useResume } from "@/hooks/use-resume";
+import { I18nProvider, useI18n } from "@/i18n/react";
+import { createTranslator, type Locale } from "@/i18n/ui";
 import { cn } from "@/lib/utils";
 
 type View = "edit" | "preview";
@@ -20,28 +23,60 @@ interface ResumeBuilderProps {
 }
 
 /**
- * Root island: owns resume state, the responsive edit/preview layout and the
- * print pipeline. The `print-only` copy is what the browser turns into a PDF.
+ * Root island: sets up i18n and the LiveStore registry (SQLite via OPFS —
+ * resumes are saved locally and restored on the next visit), then renders the
+ * builder. The `print-only` copy is what the browser turns into a PDF.
  * Translations come serialized from the Astro page and reach every child
  * through `I18nProvider`.
  */
 export default function ResumeBuilder({ locale, altHref }: ResumeBuilderProps) {
-  const { data, dispatch } = useResume();
-  const [view, setView] = useState<View>("edit");
   const t = createTranslator(locale);
+  const [storeRegistry] = useState(() => new StoreRegistry());
 
   return (
     <I18nProvider value={{ locale, altHref, t }}>
+      <Suspense
+        fallback={
+          <div className="flex min-h-svh items-center justify-center text-sm text-muted-foreground">
+            {t("app.loading")}
+          </div>
+        }
+      >
+        <StoreRegistryProvider storeRegistry={storeRegistry}>
+          <BuilderApp />
+        </StoreRegistryProvider>
+      </Suspense>
+    </I18nProvider>
+  );
+}
+
+function BuilderApp() {
+  const { data, dispatch, resumes, activeId, saveState, createResume, switchResume, renameResume, deleteResume } =
+    useResume();
+  const [view, setView] = useState<View>("edit");
+  const { t } = useI18n();
+
+  return (
+    <>
       <div className="app-ui flex min-h-svh flex-col bg-muted/30">
         <header className="sticky top-0 z-20 border-b bg-background/90 backdrop-blur">
           <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
-            <div className="flex items-center gap-2">
-              <span className="grid size-7 place-items-center rounded-lg bg-primary text-primary-foreground">
+            <div className="flex min-w-0 items-center gap-2">
+              <span className="grid size-7 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground">
                 <FileText className="size-4" aria-hidden="true" />
               </span>
-              <span className="text-sm font-semibold tracking-tight">
+              <span className="hidden text-sm font-semibold tracking-tight sm:inline">
                 resume<span className="text-muted-foreground">.dev</span>
               </span>
+              <ResumeManager
+                resumes={resumes}
+                activeId={activeId}
+                saveState={saveState}
+                onCreate={createResume}
+                onSwitch={switchResume}
+                onRename={renameResume}
+                onDelete={deleteResume}
+              />
             </div>
 
             <div className="flex items-center gap-2">
@@ -107,6 +142,6 @@ export default function ResumeBuilder({ locale, altHref }: ResumeBuilderProps) {
       <div className="print-only" aria-hidden="true">
         <ResumePreview data={data} />
       </div>
-    </I18nProvider>
+    </>
   );
 }

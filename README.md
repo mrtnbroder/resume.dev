@@ -2,13 +2,16 @@
 
 A resume builder with a live A4 preview. Fill in personal details, work
 experience, education and skills; drag to reorder entries; download the result
-as a PDF. State persists locally, no account or backend needed.
+as a PDF. Resumes are saved locally in SQLite (via
+[LiveStore](https://livestore.dev)) — keep a library of named resumes, switch
+between them, no account or backend needed.
 
 ## Stack
 
 - [Astro 7](https://astro.build) with the React integration — one interactive
   island, static everywhere else
-- [Tailwind CSS v4](https://tailwindcss.com) via `@tailwindcss/vite`
+- [LiveStore](https://docs.livestore.dev) — event-sourced state persisted to
+  SQLite in the browser (OPFS), one row per saved resume
 - [shadcn/ui](https://ui.shadcn.com) components on **Base UI** primitives
   (`--base base`), **not** Radix
 - TypeScript (strict), [Bun](https://bun.sh) as the package manager
@@ -58,7 +61,8 @@ src/
     preview/       # print-faithful resume rendering
     ui/            # shadcn components (Base UI)
   hooks/
-    use-resume.ts  # reducer store + localStorage persistence
+    use-resume.ts  # editor state + debounced autosave over the LiveStore store
+  livestore/       # LiveStore schema, queries, OPFS adapter + worker wiring
   lib/
     resume.ts      # domain model, factories, formatting helpers
   i18n/
