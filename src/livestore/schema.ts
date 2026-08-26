@@ -37,11 +37,22 @@ const EducationEntrySchema = Schema.Struct({
   endDate: Schema.String,
 });
 
+const ResumeDesignSchema = Schema.Literal(
+  "plain",
+  "minimal",
+  "swiss",
+  "artsy",
+  "business",
+  "modern",
+);
+
 export const ResumeDataSchema = Schema.Struct({
   personal: PersonalSchema,
   work: Schema.Array(WorkExperienceSchema),
   education: Schema.Array(EducationEntrySchema),
   skills: Schema.Array(Schema.String),
+  // Absent on documents saved before the design picker; decodes to "plain".
+  design: Schema.optionalWith(ResumeDesignSchema, { default: () => "plain" as const }),
 });
 
 export const tables = {

@@ -14,6 +14,16 @@ export interface PersonalInfo {
   summary: string;
 }
 
+export const RESUME_DESIGNS = ["plain", "minimal", "swiss", "artsy", "business", "modern"] as const;
+export type ResumeDesign = (typeof RESUME_DESIGNS)[number];
+
+/** Coerces an unknown persisted value to a valid design; legacy documents fall back to "plain". */
+export function normalizeDesign(value: unknown): ResumeDesign {
+  return typeof value === "string" && (RESUME_DESIGNS as readonly string[]).includes(value)
+    ? (value as ResumeDesign)
+    : "plain";
+}
+
 export interface WorkExperience {
   id: string;
   company: string;
@@ -40,6 +50,8 @@ export interface ResumeData {
   work: WorkExperience[];
   education: EducationEntry[];
   skills: string[];
+  /** Visual design of the rendered PDF. */
+  design: ResumeDesign;
 }
 
 export const MAX_SKILLS = 30;
@@ -73,7 +85,7 @@ export function emptyEducation(): EducationEntry {
 }
 
 export function emptyResume(): ResumeData {
-  return { personal: emptyPersonal(), work: [], education: [], skills: [] };
+  return { personal: emptyPersonal(), work: [], education: [], skills: [], design: "plain" };
 }
 
 /** Reorders `items` to match `ids`. Unknown/missing ids keep their relative order at the end. */
@@ -101,7 +113,11 @@ export function isResumeData(value: unknown): value is ResumeData {
     Array.isArray(record.skills) &&
     record.work.every((entry) => typeof entry === "object" && entry !== null) &&
     record.education.every((entry) => typeof entry === "object" && entry !== null) &&
-    record.skills.every((skill) => typeof skill === "string")
+    record.skills.every((skill) => typeof skill === "string") &&
+    // `design` was added after the first release; absent values are normalized by callers.
+    (record.design === undefined ||
+      (typeof record.design === "string" &&
+        (RESUME_DESIGNS as readonly string[]).includes(record.design)))
   );
 }
 

@@ -8,11 +8,13 @@ import {
   MAX_SKILLS,
   emptyResume,
   isResumeData,
+  normalizeDesign,
   normalizeSkill,
   orderById,
   type EducationEntry,
   type PersonalInfo,
   type ResumeData,
+  type ResumeDesign,
   type WorkExperience,
 } from "@/lib/resume";
 
@@ -27,7 +29,8 @@ export type ResumeAction =
   | { type: "remove_education"; id: string }
   | { type: "set_education_order"; ids: string[] }
   | { type: "add_skill"; skill: string }
-  | { type: "remove_skill"; skill: string };
+  | { type: "remove_skill"; skill: string }
+  | { type: "set_design"; design: ResumeDesign };
 
 /** A resume document as persisted by LiveStore (one row of the `resumes` table). */
 export interface SavedResume {
@@ -78,6 +81,8 @@ export function resumeReducer(state: ResumeData, action: ResumeAction): ResumeDa
     }
     case "remove_skill":
       return { ...state, skills: state.skills.filter((skill) => skill !== action.skill) };
+    case "set_design":
+      return state.design === action.design ? state : { ...state, design: action.design };
   }
 }
 
@@ -90,7 +95,9 @@ function takeLegacyResume(): ResumeData | null {
     if (!raw) return null;
     window.localStorage.removeItem(LEGACY_STORAGE_KEY);
     const parsed: unknown = JSON.parse(raw);
-    return isResumeData(parsed) ? parsed : null;
+    if (!isResumeData(parsed)) return null;
+    // Documents saved before the design picker have no `design`; default them.
+    return { ...parsed, design: normalizeDesign(parsed.design) };
   } catch {
     return null;
   }
@@ -123,6 +130,7 @@ export function useResume() {
           work: row.data.work.map((entry) => ({ ...entry })),
           education: row.data.education.map((entry) => ({ ...entry })),
           skills: [...row.data.skills],
+          design: row.data.design,
         },
       })),
     [rows],

@@ -3,6 +3,7 @@ import { StoreRegistry } from "@livestore/livestore";
 import { StoreRegistryProvider } from "@livestore/react";
 import { Download, Eye, FileText, PenLine } from "lucide-react";
 
+import { DesignPicker } from "./design-picker";
 import { FormPanel } from "./form-panel";
 import { LanguageSwitcher } from "./language-switcher";
 import { ResumeManager } from "./resume-manager";
@@ -128,9 +129,15 @@ function BuilderApp() {
 
           <div className={cn("min-w-0", view !== "preview" && "hidden lg:block")}>
             <div className="lg:sticky lg:top-[72px]">
-              <p className="mb-2 hidden text-xs font-medium text-muted-foreground lg:block">
-                {t("app.livePreview")}
-              </p>
+              <div className="mb-2 flex items-center justify-end gap-3 lg:justify-between">
+                <p className="hidden text-xs font-medium text-muted-foreground lg:block">
+                  {t("app.livePreview")}
+                </p>
+                <DesignPicker
+                  value={data.design}
+                  onChange={(design) => dispatch({ type: "set_design", design })}
+                />
+              </div>
               <ScaledSheet>
                 <ResumePreview data={data} />
               </ScaledSheet>
