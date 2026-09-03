@@ -26,6 +26,7 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
 			hreflang="x-default"
 			href={getAbsoluteLocaleUrl(defaultLocale)}
 		/>
+		<meta name="description" content={t['meta.description']} />
 		<title>{t['meta.title']}</title>
 	</head>
 	<body class="min-h-svh bg-background font-sans text-foreground antialiased">

@@ -60,6 +60,10 @@ const de = {
   "label.website": "Webseite",
   "label.summary": "Profil",
   "placeholder.fullName": "Ada Lovelace",
+  "placeholder.email": "ada@beispiel.de",
+  "placeholder.phone": "+49 170 1234567",
+  "placeholder.location": "Berlin, Deutschland",
+  "placeholder.website": "https://beispiel.de",
   "placeholder.headline": "Senior Frontendentwickler",
   "placeholder.summary": "Ein kurzes berufliches Profil, das oben im Lebenslauf erscheint.",
 
@@ -167,6 +171,10 @@ const en: Dictionary = {
   "placeholder.headline": "Senior Frontend Engineer",
   "placeholder.summary": "A short professional summary shown at the top of your resume.",
 
+  "placeholder.email": "ada@example.com",
+  "placeholder.phone": "+1 555 010 2030",
+  "placeholder.location": "Berlin, Germany",
+  "placeholder.website": "https://example.com",
   "section.work": "Work experience",
   "action.add": "Add",
   "empty.work": "No positions yet. Add your most recent role.",

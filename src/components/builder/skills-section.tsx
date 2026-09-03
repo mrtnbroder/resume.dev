@@ -80,7 +80,7 @@ export function SkillsSection({ skills, dispatch }: SkillsSectionProps) {
         )}
 
         <p className="text-xs text-muted-foreground">
-          Press Enter or comma to add; Backspace removes the last one. Duplicates are ignored.
+          {t("hint.skills")}
         </p>
       </div>
     </SectionCard>

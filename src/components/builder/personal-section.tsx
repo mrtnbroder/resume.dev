@@ -30,7 +30,7 @@ export function PersonalSection({ personal, dispatch }: PersonalSectionProps) {
             id={fieldId("fullName")}
             value={personal.fullName}
             onChange={(event) => update("fullName", event.target.value)}
-            placeholder="Ada Lovelace"
+            placeholder={t("placeholder.fullName")}
             autoComplete="name"
           />
         </Field>
@@ -50,7 +50,7 @@ export function PersonalSection({ personal, dispatch }: PersonalSectionProps) {
             type="email"
             value={personal.email}
             onChange={(event) => update("email", event.target.value)}
-            placeholder="ada@example.com"
+            placeholder={t("placeholder.email")}
             autoComplete="email"
           />
         </Field>
@@ -61,7 +61,7 @@ export function PersonalSection({ personal, dispatch }: PersonalSectionProps) {
             type="tel"
             value={personal.phone}
             onChange={(event) => update("phone", event.target.value)}
-            placeholder="+1 555 010 2030"
+            placeholder={t("placeholder.phone")}
             autoComplete="tel"
           />
         </Field>
@@ -71,7 +71,7 @@ export function PersonalSection({ personal, dispatch }: PersonalSectionProps) {
             id={fieldId("location")}
             value={personal.location}
             onChange={(event) => update("location", event.target.value)}
-            placeholder="Berlin, Germany"
+            placeholder={t("placeholder.location")}
           />
         </Field>
 
@@ -81,7 +81,7 @@ export function PersonalSection({ personal, dispatch }: PersonalSectionProps) {
             type="url"
             value={personal.website}
             onChange={(event) => update("website", event.target.value)}
-            placeholder="https://example.com"
+            placeholder={t("placeholder.website")}
           />
         </Field>
 

@@ -101,7 +101,7 @@ export function EducationSection({ entries, dispatch }: EducationSectionProps) {
                       id={`${uid}-${entry.id}-degree`}
                       value={entry.degree}
                       onChange={(event) => patch({ degree: event.target.value })}
-                      placeholder="M.Sc."
+                      placeholder={t("placeholder.degree")}
                     />
                   </Field>
 
