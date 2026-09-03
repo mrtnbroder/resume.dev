@@ -55,12 +55,12 @@ function ContactLine({ contact }: { contact: ContactItem }) {
 
 function EducationCard({ entry }: { entry: EducationEntry }) {
   const degreeLine = [entry.degree.trim(), entry.field.trim()].filter(Boolean).join(", ");
-  const { t, locale } = useI18n();
+  const { locale } = useI18n();
   const range = formatRange(entry.startDate, entry.endDate, false, locale);
   return (
     <div className="resume-entry break-inside-avoid">
       <p className="text-xs leading-snug font-semibold text-slate-700">
-        {degreeLine || entry.school.trim() || t("preview.fallbackProgram")}
+        {degreeLine || entry.school.trim()}
       </p>
       {degreeLine && entry.school.trim() && (
         <p className="text-[11px] leading-snug text-slate-500">{entry.school.trim()}</p>
@@ -102,7 +102,7 @@ function WorkEntry({ entry }: { entry: WorkExperience }) {
 
 export function ModernDesign({ data }: DesignProps) {
   const { personal } = data;
-  const { t, contacts, jobs, schools } = useResumeSections(data);
+  const { t, contacts, jobs, schools, qualifications } = useResumeSections(data);
 
   return (
     <article className="design-modern resume-sheet">
@@ -129,6 +129,22 @@ export function ModernDesign({ data }: DesignProps) {
                     className="rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-[11px] text-slate-600"
                   >
                     {skill}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {qualifications.length > 0 && (
+            <section className="resume-section">
+              <SidebarLabel title={t("preview.section.qualifications")} />
+              <ul className="space-y-1.5">
+                {qualifications.map((entry) => (
+                  <li key={entry.id} className="text-[11px] leading-snug text-slate-600">
+                    <span className="font-semibold text-slate-800">{entry.title.trim()}</span>
+                    {entry.detail.trim() && (
+                      <span className="block">{entry.detail.trim()}</span>
+                    )}
                   </li>
                 ))}
               </ul>

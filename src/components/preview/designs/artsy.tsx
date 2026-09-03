@@ -55,13 +55,13 @@ function WorkEntry({ entry }: { entry: WorkExperience }) {
 
 function EducationView({ entry }: { entry: EducationEntry }) {
   const degreeLine = [entry.degree.trim(), entry.field.trim()].filter(Boolean).join(", ");
-  const { t, locale } = useI18n();
+  const { locale } = useI18n();
   const range = formatRange(entry.startDate, entry.endDate, false, locale);
   return (
     <div className="resume-entry mb-4 break-inside-avoid last:mb-0">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5">
         <h3 className="text-base italic text-stone-900">
-          {degreeLine || t("preview.fallbackProgram")}
+          {degreeLine}
           {entry.school.trim() && (
             <span className="ml-2 text-xs font-medium tracking-widest text-stone-500 uppercase not-italic">
               {entry.school.trim()}
@@ -76,7 +76,7 @@ function EducationView({ entry }: { entry: EducationEntry }) {
 
 export function ArtsyDesign({ data }: DesignProps) {
   const { personal } = data;
-  const { t, contacts, jobs, schools } = useResumeSections(data);
+  const { t, contacts, jobs, schools, qualifications } = useResumeSections(data);
 
   return (
     <article className="design-artsy resume-sheet resume-font-serif">
@@ -145,6 +145,24 @@ export function ArtsyDesign({ data }: DesignProps) {
               </span>
             ))}
           </p>
+        </Section>
+      )}
+
+      {qualifications.length > 0 && (
+        <Section title={t("preview.section.qualifications")}>
+          <ul className="space-y-1 text-[13px] text-stone-600 italic">
+            {qualifications.map((entry) => (
+              <li key={entry.id}>
+                <span className="font-medium text-stone-900">{entry.title.trim()}</span>
+                {entry.detail.trim() && (
+                  <span>
+                    <span aria-hidden="true" className="mx-2 text-orange-700 not-italic">·</span>
+                    {entry.detail.trim()}
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
         </Section>
       )}
     </article>

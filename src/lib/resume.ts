@@ -45,10 +45,19 @@ export interface EducationEntry {
   endDate: string;
 }
 
+export interface QualificationEntry {
+  id: string;
+  /** Short name, e.g. a language, hobby or certification. */
+  title: string;
+  /** Optional level, issuer, year, … */
+  detail: string;
+}
+
 export interface ResumeData {
   personal: PersonalInfo;
   work: WorkExperience[];
   education: EducationEntry[];
+  qualifications: QualificationEntry[];
   skills: string[];
   /** Visual design of the rendered PDF. */
   design: ResumeDesign;
@@ -84,8 +93,19 @@ export function emptyEducation(): EducationEntry {
   };
 }
 
+export function emptyQualification(): QualificationEntry {
+  return { id: crypto.randomUUID(), title: "", detail: "" };
+}
+
 export function emptyResume(): ResumeData {
-  return { personal: emptyPersonal(), work: [], education: [], skills: [], design: "plain" };
+  return {
+    personal: emptyPersonal(),
+    work: [],
+    education: [],
+    qualifications: [],
+    skills: [],
+    design: "plain",
+  };
 }
 
 /** Reorders `items` to match `ids`. Unknown/missing ids keep their relative order at the end. */
@@ -114,10 +134,14 @@ export function isResumeData(value: unknown): value is ResumeData {
     record.work.every((entry) => typeof entry === "object" && entry !== null) &&
     record.education.every((entry) => typeof entry === "object" && entry !== null) &&
     record.skills.every((skill) => typeof skill === "string") &&
-    // `design` was added after the first release; absent values are normalized by callers.
+    // `design`/`qualifications` were added after the first release; absent
+    // values are normalized by callers.
     (record.design === undefined ||
       (typeof record.design === "string" &&
-        (RESUME_DESIGNS as readonly string[]).includes(record.design)))
+        (RESUME_DESIGNS as readonly string[]).includes(record.design))) &&
+    (record.qualifications === undefined ||
+      (Array.isArray(record.qualifications) &&
+        record.qualifications.every((entry) => typeof entry === "object" && entry !== null)))
   );
 }
 

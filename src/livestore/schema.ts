@@ -37,6 +37,12 @@ const EducationEntrySchema = Schema.Struct({
   endDate: Schema.String,
 });
 
+const QualificationEntrySchema = Schema.Struct({
+  id: Schema.String,
+  title: Schema.String,
+  detail: Schema.String,
+});
+
 const ResumeDesignSchema = Schema.Literal(
   "plain",
   "minimal",
@@ -51,6 +57,10 @@ export const ResumeDataSchema = Schema.Struct({
   work: Schema.Array(WorkExperienceSchema),
   education: Schema.Array(EducationEntrySchema),
   skills: Schema.Array(Schema.String),
+  // Absent on documents saved before qualifications; decodes to [].
+  qualifications: Schema.optionalWith(Schema.Array(QualificationEntrySchema), {
+    default: () => [],
+  }),
   // Absent on documents saved before the design picker; decodes to "plain".
   design: Schema.optionalWith(ResumeDesignSchema, { default: () => "plain" as const }),
 });

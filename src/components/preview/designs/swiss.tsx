@@ -19,7 +19,7 @@ function RailLabel({ title }: { title: string }) {
 
 export function SwissDesign({ data }: DesignProps) {
   const { personal } = data;
-  const { t, locale, contacts, jobs, schools } = useResumeSections(data);
+  const { t, locale, contacts, jobs, schools, qualifications } = useResumeSections(data);
   const range = (entry: WorkExperience) =>
     formatRange(entry.startDate, entry.endDate, entry.current, locale);
 
@@ -85,6 +85,22 @@ export function SwissDesign({ data }: DesignProps) {
                 {data.skills.map((skill, index) => (
                   <li key={`${skill.toLowerCase()}-${index}`} className="py-1 first:pt-0 last:pb-0">
                     {skill}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {qualifications.length > 0 && (
+            <section className="resume-section">
+              <RailLabel title={t("preview.section.qualifications")} />
+              <ul className="divide-y divide-neutral-200 text-xs text-neutral-700">
+                {qualifications.map((entry) => (
+                  <li key={entry.id} className="py-1 first:pt-0 last:pb-0">
+                    <span className="font-bold">{entry.title.trim()}</span>
+                    {entry.detail.trim() && (
+                      <span className="block text-neutral-500">{entry.detail.trim()}</span>
+                    )}
                   </li>
                 ))}
               </ul>

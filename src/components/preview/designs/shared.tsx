@@ -43,6 +43,9 @@ export function useResumeSections(data: ResumeData) {
   const schools: EducationEntry[] = data.education.filter(
     (entry) => entry.school.trim() !== "" || entry.degree.trim() !== "" || entry.field.trim() !== "",
   );
+  const qualifications = data.qualifications.filter(
+    (entry) => entry.title.trim() !== "" || entry.detail.trim() !== "",
+  );
 
-  return { t, locale, contacts, jobs, schools };
+  return { t, locale, contacts, jobs, schools, qualifications };
 }

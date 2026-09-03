@@ -58,12 +58,12 @@ function WorkEntry({ entry }: { entry: WorkExperience }) {
 
 function EducationView({ entry }: { entry: EducationEntry }) {
   const degreeLine = [entry.degree.trim(), entry.field.trim()].filter(Boolean).join(", ");
-  const { t, locale } = useI18n();
+  const { locale } = useI18n();
   return (
     <div className="resume-entry mb-3 break-inside-avoid last:mb-0">
       <div className="flex items-baseline justify-between gap-3">
         <h3 className="text-sm font-semibold">
-          {degreeLine || t("preview.fallbackProgram")}
+          {degreeLine}
           {entry.school.trim() ? (
             <span className="font-normal text-neutral-700"> · {entry.school.trim()}</span>
           ) : null}
@@ -76,7 +76,7 @@ function EducationView({ entry }: { entry: EducationEntry }) {
 
 export function PlainDesign({ data }: DesignProps) {
   const { personal } = data;
-  const { t, contacts, jobs, schools } = useResumeSections(data);
+  const { t, contacts, jobs, schools, qualifications } = useResumeSections(data);
 
   return (
     <article className="resume-sheet design-plain">
@@ -138,6 +138,19 @@ export function PlainDesign({ data }: DesignProps) {
                 className="rounded-md border border-neutral-300 px-2 py-0.5 text-xs text-neutral-700"
               >
                 {skill}
+              </li>
+            ))}
+          </ul>
+        </PreviewSection>
+      )}
+
+      {qualifications.length > 0 && (
+        <PreviewSection title={t("preview.section.qualifications")}>
+          <ul className="space-y-1">
+            {qualifications.map((entry) => (
+              <li key={entry.id} className="text-[13px] text-neutral-700">
+                <span className="font-medium text-neutral-900">{entry.title.trim()}</span>
+                {entry.detail.trim() && <span> · {entry.detail.trim()}</span>}
               </li>
             ))}
           </ul>

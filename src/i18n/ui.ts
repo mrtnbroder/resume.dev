@@ -96,6 +96,16 @@ const de = {
   "placeholder.degree": "M.Sc.",
   "placeholder.fieldOfStudy": "Informatik",
 
+  // Qualifications section
+  "section.qualifications": "Qualifikationen",
+  "empty.qualifications":
+    "Noch keine Einträge hinterlegt. Fügen Sie Sprachen, Hobbys oder Zertifikate hinzu.",
+  "entry.newQualification": "Neue Qualifikation",
+  "label.title": "Bezeichnung",
+  "label.detail": "Details",
+  "placeholder.title": "Englisch (C1)",
+  "placeholder.detail": "Verhandlungssicher",
+
   // Skills section
   "section.skills": "Kenntnisse",
   "aria.addSkill": "Kenntnis hinzufügen",
@@ -115,12 +125,12 @@ const de = {
   "preview.empty": "Hier erscheint die Vorschau Ihres Lebenslaufs.",
   "preview.emptyHint": "Beginnen Sie mit der Eingabe Ihres Namens im Formular.",
   "preview.fallbackPosition": "Position",
-  "preview.fallbackProgram": "Studiengang",
   "preview.section.summary": "Profil",
   "preview.section.work": "Berufserfahrung",
   "preview.section.education": "Ausbildung",
   "preview.section.skills": "Kenntnisse",
 
+  "preview.section.qualifications": "Qualifikationen",
   // Dates
   "range.present": "Heute",
 } as const;
@@ -201,6 +211,14 @@ const en: Dictionary = {
   "placeholder.degree": "M.Sc.",
   "placeholder.fieldOfStudy": "Computer Science",
 
+  "section.qualifications": "Qualifications",
+  "empty.qualifications": "No entries yet. Add languages, hobbies or certifications.",
+  "entry.newQualification": "New qualification",
+  "label.title": "Name",
+  "label.detail": "Details",
+  "placeholder.title": "English (C1)",
+  "placeholder.detail": "Fluent",
+
   "section.skills": "Skills",
   "aria.addSkill": "Add a skill",
   "placeholder.skills": "React, TypeScript…",
@@ -216,11 +234,11 @@ const en: Dictionary = {
   "preview.empty": "Your resume preview appears here.",
   "preview.emptyHint": "Start by entering your name in the form.",
   "preview.fallbackPosition": "Position",
-  "preview.fallbackProgram": "Program",
   "preview.section.summary": "Summary",
   "preview.section.work": "Work experience",
   "preview.section.education": "Education",
   "preview.section.skills": "Skills",
+  "preview.section.qualifications": "Qualifications",
 
   "range.present": "Present",
 };

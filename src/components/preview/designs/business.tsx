@@ -53,13 +53,13 @@ function WorkEntry({ entry }: { entry: WorkExperience }) {
 
 function EducationView({ entry }: { entry: EducationEntry }) {
   const degreeLine = [entry.degree.trim(), entry.field.trim()].filter(Boolean).join(", ");
-  const { t, locale } = useI18n();
+  const { locale } = useI18n();
   const range = formatRange(entry.startDate, entry.endDate, false, locale);
   return (
     <div className="resume-entry mb-3 break-inside-avoid last:mb-0">
       <div className="flex items-baseline justify-between gap-4">
         <h3 className="text-sm text-slate-900">
-          <span className="font-bold">{degreeLine || t("preview.fallbackProgram")}</span>
+          <span className="font-bold">{degreeLine}</span>
           {entry.school.trim() && <span className="font-normal text-slate-600"> — {entry.school.trim()}</span>}
         </h3>
         {range && <span className="shrink-0 text-xs text-slate-500 tabular-nums">{range}</span>}
@@ -70,7 +70,7 @@ function EducationView({ entry }: { entry: EducationEntry }) {
 
 export function BusinessDesign({ data }: DesignProps) {
   const { personal } = data;
-  const { t, contacts, jobs, schools } = useResumeSections(data);
+  const { t, contacts, jobs, schools, qualifications } = useResumeSections(data);
 
   return (
     <article className="design-business resume-sheet">
@@ -132,6 +132,22 @@ export function BusinessDesign({ data }: DesignProps) {
               <li key={`${skill.toLowerCase()}-${index}`} className="flex items-center gap-2 text-[13px] text-slate-700">
                 <span aria-hidden="true" className="size-1.5 shrink-0 bg-slate-700" />
                 {skill}
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
+
+      {qualifications.length > 0 && (
+        <Section title={t("preview.section.qualifications")}>
+          <ul className="space-y-1.5">
+            {qualifications.map((entry) => (
+              <li key={entry.id} className="flex items-center gap-2 text-[13px] text-slate-700">
+                <span aria-hidden="true" className="size-1.5 shrink-0 bg-slate-700" />
+                <span>
+                  <span className="font-medium">{entry.title.trim()}</span>
+                  {entry.detail.trim() && <span className="font-normal"> — {entry.detail.trim()}</span>}
+                </span>
               </li>
             ))}
           </ul>

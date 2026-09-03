@@ -28,6 +28,9 @@ export function ResumePreview({ data }: ResumePreviewProps) {
     data.education.every(
       (entry) => entry.school.trim() === "" && entry.degree.trim() === "" && entry.field.trim() === "",
     ) &&
+    data.qualifications.every(
+      (entry) => entry.title.trim() === "" && entry.detail.trim() === "",
+    ) &&
     data.skills.length === 0;
 
   if (isEmpty) {

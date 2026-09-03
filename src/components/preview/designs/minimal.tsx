@@ -51,13 +51,13 @@ function WorkEntry({ entry }: { entry: WorkExperience }) {
 
 function EducationView({ entry }: { entry: EducationEntry }) {
   const degreeLine = [entry.degree.trim(), entry.field.trim()].filter(Boolean).join(", ");
-  const { t, locale } = useI18n();
+  const { locale } = useI18n();
   const range = formatRange(entry.startDate, entry.endDate, false, locale);
   return (
     <div className="resume-entry mb-4 break-inside-avoid last:mb-0">
       <div className="flex items-baseline justify-between gap-4">
         <h3 className="text-sm font-normal text-neutral-900">
-          {degreeLine || t("preview.fallbackProgram")}
+          {degreeLine}
           {entry.school.trim() && <span className="text-neutral-400"> — {entry.school.trim()}</span>}
         </h3>
         {range && <span className="text-xs text-neutral-400 tabular-nums">{range}</span>}
@@ -68,7 +68,7 @@ function EducationView({ entry }: { entry: EducationEntry }) {
 
 export function MinimalDesign({ data }: DesignProps) {
   const { personal } = data;
-  const { t, contacts, jobs, schools } = useResumeSections(data);
+  const { t, contacts, jobs, schools, qualifications } = useResumeSections(data);
 
   return (
     <article className="design-minimal resume-sheet">
@@ -122,6 +122,19 @@ export function MinimalDesign({ data }: DesignProps) {
           <p className="text-[13px] leading-relaxed text-neutral-500">
             {data.skills.join("  ·  ")}
           </p>
+        </Section>
+      )}
+
+      {qualifications.length > 0 && (
+        <Section title={t("preview.section.qualifications")}>
+          <ul className="space-y-1">
+            {qualifications.map((entry) => (
+              <li key={entry.id} className="text-[13px] text-neutral-500">
+                <span className="text-neutral-900">{entry.title.trim()}</span>
+                {entry.detail.trim() && <span> — {entry.detail.trim()}</span>}
+              </li>
+            ))}
+          </ul>
         </Section>
       )}
     </article>

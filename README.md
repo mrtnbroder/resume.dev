@@ -1,8 +1,8 @@
 # resume.dev
 
 A resume builder with a live A4 preview. Fill in personal details, work
-experience, education and skills; drag to reorder entries; download the result
-as a PDF. Resumes are saved locally in SQLite (via
+experience, education, skills and qualifications; drag to reorder entries;
+download the result as a PDF. Resumes are saved locally in SQLite (via
 [LiveStore](https://livestore.dev)) — keep a library of named resumes, switch
 between them, no account or backend needed.
 

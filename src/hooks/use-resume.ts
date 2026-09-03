@@ -6,6 +6,7 @@ import { events } from "@/livestore/schema";
 import { useI18n } from "@/i18n/react";
 import {
   MAX_SKILLS,
+  emptyQualification,
   emptyResume,
   isResumeData,
   normalizeDesign,
@@ -13,6 +14,7 @@ import {
   orderById,
   type EducationEntry,
   type PersonalInfo,
+  type QualificationEntry,
   type ResumeData,
   type ResumeDesign,
   type WorkExperience,
@@ -28,6 +30,10 @@ export type ResumeAction =
   | { type: "update_education"; id: string; patch: Partial<Omit<EducationEntry, "id">> }
   | { type: "remove_education"; id: string }
   | { type: "set_education_order"; ids: string[] }
+  | { type: "add_qualification"; entry: QualificationEntry }
+  | { type: "update_qualification"; id: string; patch: Partial<Omit<QualificationEntry, "id">> }
+  | { type: "remove_qualification"; id: string }
+  | { type: "set_qualification_order"; ids: string[] }
   | { type: "add_skill"; skill: string }
   | { type: "remove_skill"; skill: string }
   | { type: "set_design"; design: ResumeDesign };
@@ -71,6 +77,14 @@ export function resumeReducer(state: ResumeData, action: ResumeAction): ResumeDa
       return { ...state, education: state.education.filter((entry) => entry.id !== action.id) };
     case "set_education_order":
       return { ...state, education: orderById(state.education, action.ids) };
+    case "add_qualification":
+      return { ...state, qualifications: [...state.qualifications, action.entry] };
+    case "update_qualification":
+      return { ...state, qualifications: updateById(state.qualifications, action.id, action.patch) };
+    case "remove_qualification":
+      return { ...state, qualifications: state.qualifications.filter((entry) => entry.id !== action.id) };
+    case "set_qualification_order":
+      return { ...state, qualifications: orderById(state.qualifications, action.ids) };
     case "add_skill": {
       const skill = normalizeSkill(action.skill);
       if (!skill || state.skills.length >= MAX_SKILLS) return state;
@@ -96,8 +110,13 @@ function takeLegacyResume(): ResumeData | null {
     window.localStorage.removeItem(LEGACY_STORAGE_KEY);
     const parsed: unknown = JSON.parse(raw);
     if (!isResumeData(parsed)) return null;
-    // Documents saved before the design picker have no `design`; default them.
-    return { ...parsed, design: normalizeDesign(parsed.design) };
+    // Documents saved before the design picker / qualifications lack those
+    // fields; default them.
+    return {
+      ...parsed,
+      design: normalizeDesign(parsed.design),
+      qualifications: parsed.qualifications ?? [],
+    };
   } catch {
     return null;
   }
@@ -130,6 +149,7 @@ export function useResume() {
           work: row.data.work.map((entry) => ({ ...entry })),
           education: row.data.education.map((entry) => ({ ...entry })),
           skills: [...row.data.skills],
+          qualifications: row.data.qualifications.map((entry) => ({ ...entry })),
           design: row.data.design,
         },
       })),

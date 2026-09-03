@@ -2,6 +2,7 @@ import type { Dispatch } from "react";
 
 import { EducationSection } from "./education-section";
 import { PersonalSection } from "./personal-section";
+import { QualificationSection } from "./qualification-section";
 import { SkillsSection } from "./skills-section";
 import { WorkSection } from "./work-section";
 import type { ResumeAction } from "@/hooks/use-resume";
@@ -20,6 +21,7 @@ export function FormPanel({ data, dispatch }: FormPanelProps) {
       <WorkSection entries={data.work} dispatch={dispatch} />
       <EducationSection entries={data.education} dispatch={dispatch} />
       <SkillsSection skills={data.skills} dispatch={dispatch} />
+      <QualificationSection entries={data.qualifications} dispatch={dispatch} />
     </div>
   );
 }
