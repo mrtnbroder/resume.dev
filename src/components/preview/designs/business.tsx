@@ -59,8 +59,10 @@ function EducationView({ entry }: { entry: EducationEntry }) {
     <div className="resume-entry mb-3 break-inside-avoid last:mb-0">
       <div className="flex items-baseline justify-between gap-4">
         <h3 className="text-sm text-slate-900">
-          <span className="font-bold">{degreeLine}</span>
-          {entry.school.trim() && <span className="font-normal text-slate-600"> — {entry.school.trim()}</span>}
+          <span className="font-bold">{degreeLine || entry.school.trim()}</span>
+          {degreeLine.trim() && entry.school.trim() && (
+            <span className="font-normal text-slate-600"> — {entry.school.trim()}</span>
+          )}
         </h3>
         {range && <span className="shrink-0 text-xs text-slate-500 tabular-nums">{range}</span>}
       </div>

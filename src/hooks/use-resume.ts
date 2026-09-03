@@ -6,7 +6,6 @@ import { events } from "@/livestore/schema";
 import { useI18n } from "@/i18n/react";
 import {
   MAX_SKILLS,
-  emptyQualification,
   emptyResume,
   isResumeData,
   normalizeDesign,
