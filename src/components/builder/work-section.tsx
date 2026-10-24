@@ -82,6 +82,8 @@ export function WorkSection({ entries, dispatch }: WorkSectionProps) {
                   dispatch({ type: "remove_work", id: entry.id });
                   setExpandedId((current) => (current === entry.id ? null : current));
                 }}
+                hidden={entry.hidden}
+                onToggleHidden={() => patch({ hidden: !entry.hidden })}
               >
                 <div className="grid gap-4 sm:grid-cols-2">
                   <Field label={t("label.position")} htmlFor={`${uid}-${entry.id}-position`}>

@@ -34,6 +34,8 @@ export interface WorkExperience {
   current: boolean;
   /** Multiline; every non-empty line becomes a bullet point. */
   description: string;
+  /** Excluded from the rendered resume (preview/PDF) while kept in the builder. */
+  hidden: boolean;
 }
 
 export interface EducationEntry {
@@ -79,6 +81,7 @@ export function emptyWork(): WorkExperience {
     endDate: "",
     current: false,
     description: "",
+    hidden: false,
   };
 }
 

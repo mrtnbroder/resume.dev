@@ -109,10 +109,11 @@ function takeLegacyResume(): ResumeData | null {
     window.localStorage.removeItem(LEGACY_STORAGE_KEY);
     const parsed: unknown = JSON.parse(raw);
     if (!isResumeData(parsed)) return null;
-    // Documents saved before the design picker / qualifications lack those
-    // fields; default them.
+    // Documents saved before the design picker / qualifications / per-entry
+    // hiding lack those fields; default them.
     return {
       ...parsed,
+      work: parsed.work.map((entry) => ({ ...entry, hidden: entry.hidden ?? false })),
       design: normalizeDesign(parsed.design),
       qualifications: parsed.qualifications ?? [],
     };

@@ -21,9 +21,10 @@ export function ResumePreview({ data }: ResumePreviewProps) {
     data.personal.fullName.trim() === "" &&
     data.work.every(
       (entry) =>
-        entry.position.trim() === "" &&
-        entry.company.trim() === "" &&
-        toBullets(entry.description).length === 0,
+        entry.hidden ||
+        (entry.position.trim() === "" &&
+          entry.company.trim() === "" &&
+          toBullets(entry.description).length === 0),
     ) &&
     data.education.every(
       (entry) => entry.school.trim() === "" && entry.degree.trim() === "" && entry.field.trim() === "",

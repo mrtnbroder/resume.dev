@@ -120,6 +120,8 @@ const de = {
   "aria.moveUp": "Nach oben verschieben",
   "aria.moveDown": "Nach unten verschieben",
   "aria.remove": "Entfernen",
+  "aria.hideEntry": "Im Lebenslauf ausblenden",
+  "aria.showEntry": "Im Lebenslauf einblenden",
 
   // Preview
   "preview.empty": "Hier erscheint die Vorschau Ihres Lebenslaufs.",
@@ -230,6 +232,8 @@ const en: Dictionary = {
   "aria.moveUp": "Move up",
   "aria.moveDown": "Move down",
   "aria.remove": "Remove",
+  "aria.hideEntry": "Hide from resume",
+  "aria.showEntry": "Show in resume",
 
   "preview.empty": "Your resume preview appears here.",
   "preview.emptyHint": "Start by entering your name in the form.",

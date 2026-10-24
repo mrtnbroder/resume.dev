@@ -1,4 +1,12 @@
-import { ArrowDown, ArrowUp, ChevronDown, GripVertical, Trash2 } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  ChevronDown,
+  Eye,
+  EyeOff,
+  GripVertical,
+  Trash2,
+} from "lucide-react";
 import type { ReactNode } from "react";
 
 import type { DragHandleProps } from "./sortable-list";
@@ -17,6 +25,9 @@ interface EntryShellProps {
   onMoveUp: () => void;
   onMoveDown: () => void;
   onRemove: () => void;
+  /** When provided, renders an eye toggle that excludes the entry from the resume. */
+  hidden?: boolean;
+  onToggleHidden?: () => void;
   children: ReactNode;
 }
 
@@ -36,6 +47,8 @@ export function EntryShell({
   onMoveUp,
   onMoveDown,
   onRemove,
+  hidden = false,
+  onToggleHidden,
   children,
 }: EntryShellProps) {
   const { t } = useI18n();
@@ -56,7 +69,7 @@ export function EntryShell({
           aria-expanded={expanded}
           className="flex min-w-0 flex-1 items-center gap-2 rounded-md px-2 py-1.5 text-left hover:bg-muted"
         >
-          <span className="min-w-0 flex-1">
+          <span className={cn("min-w-0 flex-1", hidden && "opacity-50")}>
             <span className="block truncate text-sm font-medium">{title}</span>
             {subtitle ? (
               <span className="block truncate text-xs text-muted-foreground">{subtitle}</span>
@@ -71,6 +84,18 @@ export function EntryShell({
         </button>
 
         <div className="flex items-center">
+          {onToggleHidden ? (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={onToggleHidden}
+              aria-label={hidden ? t("aria.showEntry") : t("aria.hideEntry")}
+              title={hidden ? t("aria.showEntry") : t("aria.hideEntry")}
+              className={cn(hidden && "text-muted-foreground")}
+            >
+              {hidden ? <EyeOff /> : <Eye />}
+            </Button>
+          ) : null}
           <Button
             variant="ghost"
             size="icon-sm"

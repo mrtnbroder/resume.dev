@@ -36,9 +36,10 @@ export function useResumeSections(data: ResumeData) {
 
   const jobs: WorkExperience[] = data.work.filter(
     (entry) =>
-      entry.position.trim() !== "" ||
-      entry.company.trim() !== "" ||
-      toBullets(entry.description).length > 0,
+      !entry.hidden &&
+      (entry.position.trim() !== "" ||
+        entry.company.trim() !== "" ||
+        toBullets(entry.description).length > 0),
   );
   const schools: EducationEntry[] = data.education.filter(
     (entry) => entry.school.trim() !== "" || entry.degree.trim() !== "" || entry.field.trim() !== "",

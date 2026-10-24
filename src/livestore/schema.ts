@@ -26,6 +26,8 @@ const WorkExperienceSchema = Schema.Struct({
   endDate: Schema.String,
   current: Schema.Boolean,
   description: Schema.String,
+  // Absent on entries saved before per-entry hiding; decodes to false.
+  hidden: Schema.optionalWith(Schema.Boolean, { default: () => false }),
 });
 
 const EducationEntrySchema = Schema.Struct({
