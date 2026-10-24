@@ -203,4 +203,23 @@
   .resume-section h2 {
     break-after: avoid;
   }
+
+  /* Artsy: the sheet padding is stripped above, which would put the inset
+     double-rule frame on top of the text. Pin the frame to the page content
+     edge, pad the content clear of it, and stretch it to a full page (see
+     the Executive note below for the height). */
+  .design-artsy {
+    min-height: 268mm !important;
+    padding: 34px !important;
+  }
+  .design-artsy::before {
+    inset: 0;
+  }
+
+  /* Executive: stretch the dark sidebar to at least one full page. A4 height
+     minus the vertical @page margins (2 × 14mm), less 1mm to avoid a blank
+     overflow page from rounding. */
+  .design-executive {
+    min-height: 268mm !important;
+  }
 }

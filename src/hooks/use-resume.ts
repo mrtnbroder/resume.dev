@@ -35,7 +35,8 @@ export type ResumeAction =
   | { type: "set_qualification_order"; ids: string[] }
   | { type: "add_skill"; skill: string }
   | { type: "remove_skill"; skill: string }
-  | { type: "set_design"; design: ResumeDesign };
+  | { type: "set_design"; design: ResumeDesign }
+  | { type: "set_summary_in_sidebar"; value: boolean };
 
 /** A resume document as persisted by LiveStore (one row of the `resumes` table). */
 export interface SavedResume {
@@ -96,6 +97,8 @@ export function resumeReducer(state: ResumeData, action: ResumeAction): ResumeDa
       return { ...state, skills: state.skills.filter((skill) => skill !== action.skill) };
     case "set_design":
       return state.design === action.design ? state : { ...state, design: action.design };
+    case "set_summary_in_sidebar":
+      return { ...state, summaryInSidebar: action.value };
   }
 }
 
@@ -110,12 +113,13 @@ function takeLegacyResume(): ResumeData | null {
     const parsed: unknown = JSON.parse(raw);
     if (!isResumeData(parsed)) return null;
     // Documents saved before the design picker / qualifications / per-entry
-    // hiding lack those fields; default them.
+    // hiding / summary placement lack those fields; default them.
     return {
       ...parsed,
       work: parsed.work.map((entry) => ({ ...entry, hidden: entry.hidden ?? false })),
       design: normalizeDesign(parsed.design),
       qualifications: parsed.qualifications ?? [],
+      summaryInSidebar: parsed.summaryInSidebar ?? false,
     };
   } catch {
     return null;
@@ -151,6 +155,7 @@ export function useResume() {
           skills: [...row.data.skills],
           qualifications: row.data.qualifications.map((entry) => ({ ...entry })),
           design: row.data.design,
+          summaryInSidebar: row.data.summaryInSidebar,
         },
       })),
     [rows],

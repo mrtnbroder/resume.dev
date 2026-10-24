@@ -14,7 +14,19 @@ export interface PersonalInfo {
   summary: string;
 }
 
-export const RESUME_DESIGNS = ["plain", "minimal", "swiss", "artsy", "business", "modern"] as const;
+export const RESUME_DESIGNS = [
+  "plain",
+  "minimal",
+  "swiss",
+  "artsy",
+  "business",
+  "modern",
+  "classic",
+  "compact",
+  "bold",
+  "mono",
+  "executive",
+] as const;
 export type ResumeDesign = (typeof RESUME_DESIGNS)[number];
 
 /** Coerces an unknown persisted value to a valid design; legacy documents fall back to "plain". */
@@ -22,6 +34,13 @@ export function normalizeDesign(value: unknown): ResumeDesign {
   return typeof value === "string" && (RESUME_DESIGNS as readonly string[]).includes(value)
     ? (value as ResumeDesign)
     : "plain";
+}
+
+/** Designs with a side column; only these honour `ResumeData.summaryInSidebar`. */
+export const SIDEBAR_DESIGNS: readonly ResumeDesign[] = ["swiss", "modern", "executive"];
+
+export function designHasSidebar(design: ResumeDesign): boolean {
+  return SIDEBAR_DESIGNS.includes(design);
 }
 
 export interface WorkExperience {
@@ -63,6 +82,8 @@ export interface ResumeData {
   skills: string[];
   /** Visual design of the rendered PDF. */
   design: ResumeDesign;
+  /** Sidebar designs only: render the summary in the side column instead of the main one. */
+  summaryInSidebar: boolean;
 }
 
 export const MAX_SKILLS = 30;
@@ -108,6 +129,7 @@ export function emptyResume(): ResumeData {
     qualifications: [],
     skills: [],
     design: "plain",
+    summaryInSidebar: false,
   };
 }
 

@@ -7,7 +7,7 @@ interface DesignPickerProps {
   onChange: (design: ResumeDesign) => void;
 }
 
-/** Segmented radio group over the six available PDF designs. */
+/** Segmented radio group over the available PDF designs. */
 export function DesignPicker({ value, onChange }: DesignPickerProps) {
   const { t } = useI18n();
   return (

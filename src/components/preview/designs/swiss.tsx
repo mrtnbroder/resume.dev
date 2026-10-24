@@ -59,6 +59,15 @@ export function SwissDesign({ data }: DesignProps) {
       <div className="grid grid-cols-[168px_1fr] gap-x-10">
         {/* Detail rail */}
         <aside className="space-y-7">
+          {data.summaryInSidebar && personal.summary.trim() && (
+            <section className="resume-section">
+              <RailLabel title={t("preview.section.summary")} />
+              <p className="text-xs leading-relaxed whitespace-pre-line text-neutral-700">
+                {personal.summary.trim()}
+              </p>
+            </section>
+          )}
+
           {contacts.length > 0 && (
             <section className="resume-section">
               <RailLabel title={t("section.personal")} />
@@ -121,7 +130,7 @@ export function SwissDesign({ data }: DesignProps) {
 
         {/* Main column */}
         <div className="min-w-0 space-y-7">
-          {personal.summary.trim() && (
+          {!data.summaryInSidebar && personal.summary.trim() && (
             <section className="resume-section">
               <RailLabel title={t("preview.section.summary")} />
               <p className="text-[13px] leading-relaxed whitespace-pre-line text-neutral-700">

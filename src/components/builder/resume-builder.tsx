@@ -1,7 +1,7 @@
 import { Suspense, useState } from "react";
 import { StoreRegistry } from "@livestore/livestore";
 import { StoreRegistryProvider } from "@livestore/react";
-import { Download, Eye, FileText, PenLine } from "lucide-react";
+import { Download, Eye, FileText, PanelLeft, PenLine } from "lucide-react";
 
 import { DesignPicker } from "./design-picker";
 import { FormPanel } from "./form-panel";
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useResume } from "@/hooks/use-resume";
 import { I18nProvider, useI18n } from "@/i18n/react";
 import { createTranslator, type Locale } from "@/i18n/ui";
+import { designHasSidebar } from "@/lib/resume";
 import { cn } from "@/lib/utils";
 
 type View = "edit" | "preview";
@@ -129,14 +130,30 @@ function BuilderApp() {
 
           <div className={cn("min-w-0", view !== "preview" && "hidden lg:block")}>
             <div className="lg:sticky lg:top-[72px]">
-              <div className="mb-2 flex items-center justify-end gap-3 lg:justify-between">
-                <p className="hidden text-xs font-medium text-muted-foreground lg:block">
+              <div className="mb-2 flex items-start justify-end gap-3 lg:justify-between">
+                <p className="hidden pt-1.5 text-xs font-medium text-muted-foreground lg:block">
                   {t("app.livePreview")}
                 </p>
-                <DesignPicker
-                  value={data.design}
-                  onChange={(design) => dispatch({ type: "set_design", design })}
-                />
+                <div className="flex flex-col items-end gap-1.5">
+                  <DesignPicker
+                    value={data.design}
+                    onChange={(design) => dispatch({ type: "set_design", design })}
+                  />
+                  {designHasSidebar(data.design) && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      aria-pressed={data.summaryInSidebar}
+                      onClick={() =>
+                        dispatch({ type: "set_summary_in_sidebar", value: !data.summaryInSidebar })
+                      }
+                      className={cn(data.summaryInSidebar && "border-primary bg-primary/10 text-foreground")}
+                    >
+                      <PanelLeft className="size-3.5" aria-hidden="true" />
+                      {t("app.summaryInSidebar")}
+                    </Button>
+                  )}
+                </div>
               </div>
               <ScaledSheet>
                 <ResumePreview data={data} />

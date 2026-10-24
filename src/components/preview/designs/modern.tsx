@@ -108,6 +108,15 @@ export function ModernDesign({ data }: DesignProps) {
     <article className="design-modern resume-sheet">
       <div className="grid grid-cols-[220px_1fr] gap-8">
         <aside className="flex flex-col gap-6 rounded-xl bg-slate-100 p-5">
+          {data.summaryInSidebar && personal.summary.trim() && (
+            <section className="resume-section">
+              <SidebarLabel title={t("preview.section.summary")} />
+              <p className="text-xs leading-relaxed whitespace-pre-line text-slate-600">
+                {personal.summary.trim()}
+              </p>
+            </section>
+          )}
+
           {contacts.length > 0 && (
             <section className="resume-section">
               <SidebarLabel title={t("section.personal")} />
@@ -176,7 +185,7 @@ export function ModernDesign({ data }: DesignProps) {
             )}
           </header>
 
-          {personal.summary.trim() && (
+          {!data.summaryInSidebar && personal.summary.trim() && (
             <section className="resume-section mb-6">
               <MainLabel title={t("preview.section.summary")} />
               <p className="text-[13px] leading-relaxed whitespace-pre-line text-slate-600">

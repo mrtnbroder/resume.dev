@@ -52,6 +52,11 @@ const ResumeDesignSchema = Schema.Literal(
   "artsy",
   "business",
   "modern",
+  "classic",
+  "compact",
+  "bold",
+  "mono",
+  "executive",
 );
 
 export const ResumeDataSchema = Schema.Struct({
@@ -65,6 +70,8 @@ export const ResumeDataSchema = Schema.Struct({
   }),
   // Absent on documents saved before the design picker; decodes to "plain".
   design: Schema.optionalWith(ResumeDesignSchema, { default: () => "plain" as const }),
+  // Absent on documents saved before the summary placement toggle.
+  summaryInSidebar: Schema.optionalWith(Schema.Boolean, { default: () => false }),
 });
 
 export const tables = {
